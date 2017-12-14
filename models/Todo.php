@@ -1,0 +1,79 @@
+<?php
+class Todo {
+
+    private $id;
+    private $title;
+    private $isCompleted;
+    private $userId;
+    private $userEmail;
+    private $dueDate;
+    private $createdDate;
+
+    //Getters
+    public function getId() {
+        return $this->id;
+    }
+
+    public function getTitle() {
+        return $this->title;
+    }
+    public function isCompleted() {
+        return $this->isCompleted;
+    }
+    public function getUserId() {
+        return $this->userId;
+    }
+
+    public function getUserEmail() {
+        return $this->userEmail;
+    }
+
+    public function getCreatedDate() {
+        return $this->createdDate;
+    }
+
+    public function getDueDate() {
+        return $this->createdDate;
+    }
+
+    //Setters
+    public function setId($id) {
+        $this->id = $id;
+        return $this;
+    }
+    public function setTitle($title) {
+        $this->title = $title;
+        return $this;
+    }
+    public function setCompleted($isCompleted) {
+        $this->isCompleted = $isCompleted;
+        return $this;
+    }
+    public function setUserId($userId) {
+        $this->userId = $userId;
+        return $this;
+    }
+
+    public function setUserEmail($userEmail) {
+        $this->userEmail = $userEmail;
+        return $this;
+    }
+
+    public function setCreatedDate($createdDate) {
+        $this->createdDate = $createdDate;
+        return $this;
+    }
+
+    public function setDueDate($dueDate) {
+        $this->dueDate = $dueDate;
+        return $this;
+    }
+
+    public function create() {
+        $db = new Database();
+        $query = "INSERT INTO todos (owneremail, ownerid, createddate, duedate, message, isdone) VALUES ('$this->userEmail', $this->userId, NOW(), '$this->dueDate', '$this->title', $this->isCompleted)";
+        $result = $db->query($query);
+        return ['success' => true, 'msg' => 'Your todo has been saved successfully.'];
+    }
+}
+?>

@@ -39,9 +39,14 @@
             <?php endif; ?>
             <form class="form-inline" action="?action=add_todo" method="POST">
               <div class="form-group mx-sm-3">
+                <div class="input-group-addon">Title</div>
                 <input type="text" class="form-control" id="title" name="title" placeholder="Todo title">
               </div>
-              <button type="submit" class="btn btn-primary">New Todo</button>
+              <div class="form-group mx-sm-3">
+                <div class="input-group-addon">Due date</div>
+                <input type="date" class="form-control" id="due-date" name="due-date">
+              </div>
+              <button type="submit" class="btn btn-primary">Add Todo</button>
             </form>
           </div>
         </div>

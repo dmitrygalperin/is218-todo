@@ -1,6 +1,4 @@
 <?php
-include 'Database.php';
-
 class User {
     private $id;
     private $email;
@@ -68,23 +66,6 @@ class User {
         return $this;
     }
 
-    //Display user info table
-    public function displayInfoTable() {
-        $html = "
-            <tr>
-                <td>$this->id</td>
-                <td>$this->email</td>
-                <td>$this->firstName</td>
-                <td>$this->lastName</td>
-                <td>$this->phone</td>
-                <td>$this->birthday</td>
-                <td>$this->gender</td>
-                <td>$this->password</td>
-            </tr>";
-
-        return $html;
-    }
-
     public function register() {
         $db = new Database();
         $query = "INSERT INTO accounts (email, fname, lname, phone, birthday, gender, password) VALUES ('$this->email', '$this->firstName', '$this->lastName', '$this->phone', '$this->birthday', '$this->gender', '$this->password')";
@@ -94,17 +75,21 @@ class User {
 
     public static function getUserByUserId($id) {
         $db = new Database();
-        $user = $db->query('SELECT * FROM accounts WHERE id = :id');
-        return $user;
+        $user = $db->query("SELECT * FROM accounts WHERE id = '$id'");
+        try {
+            return $user[0];
+        } catch(Exception $e) {
+            return false;
+        }
     }
 
     public static function getUserByEmail($email) {
         $db = new Database();
         $query = "SELECT * FROM accounts WHERE email = '$email'";
         $user = $db->query($query);
-        if(count($user) > 0) {
-            return $user;
-        } else {
+        try {
+            return $user[0];
+        } catch(Exception $e)    {
             return false;
         }
     }
@@ -115,7 +100,11 @@ class User {
 
     public function setSession() {
         session_start();
-        $_SESSION['id'] = $this->id;
+
+        //hacky way to get auto-incremented userid.
+        $user = $this->getUserByEmail($this->email);
+        $_SESSION['id'] = $user['id'];
+
         $_SESSION['email'] = $this->email;
         $_SESSION['firstName'] = $this->firstName;
         $_SESSION['lastName'] = $this->lastName;

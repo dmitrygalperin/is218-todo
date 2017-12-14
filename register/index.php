@@ -3,11 +3,13 @@ ini_set('display_startup_errors', 1);
 ini_set('display_errors', 1);
 error_reporting(-1);
 
+include '../models/Database.php';
+include '../models/User.php';
+
 $action = filter_input(INPUT_POST, 'action');
 
 switch($action) {
     case 'register':
-        include '../models/User.php';
         do_register();
         break;
     default:
