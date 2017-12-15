@@ -94,10 +94,6 @@ class User {
         }
     }
 
-    public static function getTodos($id) {
-        return [];
-    }
-
     public function setSession() {
         session_start();
 

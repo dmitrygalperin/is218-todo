@@ -75,5 +75,26 @@ class Todo {
         $result = $db->query($query);
         return ['success' => true, 'msg' => 'Your todo has been saved successfully.'];
     }
+
+    public static function getTodosByUserId($id) {
+        $db = new Database();
+        $query = "SELECT * FROM todos WHERE ownerid = '$id'";
+        $todos = $db->query($query);
+        return $todos;
+    }
+
+    public static function deleteTodoById($id) {
+        $db = new Database();
+        $query = "DELETE FROM todos WHERE id = $id";
+        $db->query($query);
+        return ['success' => true, 'msg' => 'Todo has been deleted successfully'];
+    }
+
+    public static function toggleCompletedById($id) {
+        $db = new Database();
+        $query = "UPDATE todos SET isdone = 1-isdone WHERE id = $id";
+        $db->query($query);
+        return ['success' => true, 'msg' => 'Your todo is now completed'];
+    }
 }
 ?>
