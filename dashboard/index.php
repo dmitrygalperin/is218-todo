@@ -6,9 +6,8 @@ error_reporting(-1);
 date_default_timezone_set('America/Los_Angeles');
 session_start();
 
-if(!isset($_SESSION)) {
-    include '../views/login.php';
-    return;
+if(!isset($_SESSION['email'])) {
+    header('Location: ../login');
 }
 
 include '../models/Database.php';

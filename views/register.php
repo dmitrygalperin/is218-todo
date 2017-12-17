@@ -1,10 +1,6 @@
 <?php include 'header.php'; ?>
     <div class="container mt-5">
-      <?php if(isset($err)): ?>
-        <div class="alert alert-danger" role="alert">
-          <?php echo($err) ?>
-        </div>
-      <?php endif; ?>
+      <?php include 'flashmessages.php' ?>
       <div class="card card-register">
         <h4 class="card-header">
           Sign Up

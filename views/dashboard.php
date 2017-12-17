@@ -2,7 +2,7 @@
     <main class="container">
       <?php include 'flashmessages.php'; ?>
         <div class="card mt-3">
-          <div class="card-header">
+          <div class="card-header bg-info text-white">
             Welcome, <?php echo($_SESSION['firstName'] . ' ' . $_SESSION['lastName']) ?>
           </div>
           <div class="card-body">
@@ -50,7 +50,9 @@
                 <table class="table">
                   <thead>
                     <th>Title</th>
-                    <th>Options</th>
+                    <th>Created on</th>
+                    <th>Due date</th>
+                    <th>Actions</th>
                   </thead>
                   <tbody>
                     <?php foreach($todos as $todo): ?>
@@ -60,7 +62,17 @@
                           <td><?php echo date("F j Y", strtotime($todo['createddate'])) ?></td>
                           <td><?php echo date("F j Y", strtotime($todo['duedate'])) ?></td>
                           <td>
-
+                            <form style="display:inline" action="." method="POST">
+                              <input type="hidden" name="action" value="delete_todo">
+                              <input type="hidden" name="todo-id" value="<?php echo $todo['id'] ?>">
+                              <button type="submit" class="btn btn-sm btn-danger"><i class="fa fa-trash" aria-hidden="true"></i></button>
+                            </form>
+                            <a class="btn btn-sm btn-primary" href="#" role="button"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
+                            <form style="display:inline" action="." method="POST">
+                              <input type="hidden" name="action" value="toggle_todo">
+                              <input type="hidden" name="todo-id" value="<?php echo $todo['id'] ?>">
+                              <button type="submit" class="btn btn-sm btn-success"><i class="fa fa-check" aria-hidden="true"></i></button>
+                            </form>
                           </td>
                         </tr>
                       <?php endif; ?>
@@ -69,9 +81,12 @@
                 </table>
               </div>
             <?php endif; ?>
+          </div>
+          <div class="card-footer">
             <form class="form-inline" action="." method="POST">
               <input type="hidden" name="action" value="add_todo">
               <div class="form-group mx-sm-3">
+                <label class="label" for="title">New todo:</label>
                 <div class="input-group-addon">Title</div>
                 <input type="text" class="form-control" id="title" name="title" placeholder="Todo title">
               </div>

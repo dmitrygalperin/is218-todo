@@ -27,7 +27,7 @@ function do_register() {
     $dob = filter_input(INPUT_POST, 'dob', FILTER_SANITIZE_SPECIAL_CHARS);
 
     if(User::getUserByEmail($email)) {
-        $err = "There is already an account registered under $email";
+        $status = ['success' => false, 'msg' => "There is already an account registered under $email"];
         return include('../views/register.php');
     }
 

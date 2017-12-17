@@ -94,7 +94,7 @@ class Todo {
         $db = new Database();
         $query = "UPDATE todos SET isdone = 1-isdone WHERE id = $id";
         $db->query($query);
-        return ['success' => true, 'msg' => 'Your todo is now completed'];
+        return ['success' => true, 'msg' => 'Your todo completion status has been updated'];
     }
 }
 ?>

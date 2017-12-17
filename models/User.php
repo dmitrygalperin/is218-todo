@@ -95,8 +95,6 @@ class User {
     }
 
     public function setSession() {
-        session_start();
-
         //hacky way to get auto-incremented userid.
         $user = $this->getUserByEmail($this->email);
         $_SESSION['id'] = $user['id'];
@@ -108,6 +106,17 @@ class User {
         $_SESSION['birthday'] = $this->birthday;
         $_SESSION['gender'] = $this->gender;
         return;
+    }
+
+    public static function login($email, $password) {
+        $db = new Database();
+        $query = "SELECT * FROM accounts WHERE email = '$email' AND password='$password'";
+        $rows = $db->query($query);
+        if(count($rows) > 0) {
+            return $rows[0];
+        } else {
+            return false;
+        }
     }
 
 }
