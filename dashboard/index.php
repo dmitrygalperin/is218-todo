@@ -15,26 +15,29 @@ include '../models/User.php';
 include '../models/Todo.php';
 
 $action = filter_input(INPUT_POST, 'action');
+$status = null;
+$edit_id = null;
+
 
 switch($action) {
     case 'add_todo':
         $status = add_todo();
-        show_dashboard($status);
         break;
-    case 'update_todo':
+    case 'set_edit_todo':
+        $edit_id = set_edit_todo();
+        break;
+    case 'edit_todo':
+        $status = edit_todo();
         break;
     case 'delete_todo':
         $status = delete_todo();
-        show_dashboard($status);
         break;
     case 'toggle_todo':
         $status = toggle_todo();
-        show_dashboard($status);
-        break;
-    default:
-        show_dashboard();
         break;
 }
+
+show_dashboard($status, $edit_id);
 
 function add_todo() {
     $todo = new Todo();
@@ -56,7 +59,19 @@ function toggle_todo() {
     return Todo::toggleCompletedById($id);
 }
 
-function show_dashboard($status = null) {
+function set_edit_todo() {
+    return filter_input(INPUT_POST, 'todo-id', FILTER_VALIDATE_INT);
+}
+
+function edit_todo() {
+    $id = filter_input(INPUT_POST, 'todo-id', FILTER_VALIDATE_INT);
+    $title = filter_input(INPUT_POST, 'title', FILTER_SANITIZE_SPECIAL_CHARS);
+    $due_date = filter_input(INPUT_POST, 'due-date', FILTER_SANITIZE_SPECIAL_CHARS);
+
+    return Todo::edit($id, $title, $due_date);
+}
+
+function show_dashboard($status = null, $edit_id = null) {
     $todos = Todo::getTodosByUserId($_SESSION['id']);
     include '../views/dashboard.php';
 }

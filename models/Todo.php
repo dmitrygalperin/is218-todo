@@ -76,6 +76,13 @@ class Todo {
         return ['success' => true, 'msg' => 'Your todo has been saved successfully.'];
     }
 
+    public static function edit($id, $title, $due_date) {
+        $db = new Database();
+        $query = "UPDATE todos SET message = '$title', duedate = '$due_date' WHERE id = $id";
+        $db->query($query);
+        return ['success' => true, 'msg' => 'Your todo has been edited successfully'];
+    }
+
     public static function getTodosByUserId($id) {
         $db = new Database();
         $query = "SELECT * FROM todos WHERE ownerid = '$id'";

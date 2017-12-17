@@ -11,9 +11,9 @@
             <?php else: ?>
               <div id="incomplete-todos">
                 <h3>Incomplete Todos</h3>
-                <table class="table">
+                <table class="table table-hover mb-5">
                   <thead>
-                    <th>Title</th>
+                    <th class="w-50">Title</th>
                     <th>Created on</th>
                     <th>Due date</th>
                     <th>Actions</th>
@@ -22,34 +22,57 @@
                     <?php foreach($todos as $todo): ?>
                       <?php if(!$todo['isdone']): ?>
                         <tr>
-                          <td><?php echo $todo['message'] ?></td>
-                          <td><?php echo date("F j Y", strtotime($todo['createddate'])) ?></td>
-                          <td><?php echo date("F j Y", strtotime($todo['duedate'])) ?></td>
-                          <td>
-                            <form style="display:inline" action="." method="POST">
-                              <input type="hidden" name="action" value="delete_todo">
+                          <?php if((int)$todo['id'] == $edit_id): ?>
+                            <form class="form" action="." method="POST">
+                              <input type="hidden" name="action" value="edit_todo">
                               <input type="hidden" name="todo-id" value="<?php echo $todo['id'] ?>">
-                              <button type="submit" class="btn btn-sm btn-danger"><i class="fa fa-trash" aria-hidden="true"></i></button>
-                            </form>
-                            <a class="btn btn-sm btn-primary" href="#" role="button"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
-                            <form style="display:inline" action="." method="POST">
-                              <input type="hidden" name="action" value="toggle_todo">
-                              <input type="hidden" name="todo-id" value="<?php echo $todo['id'] ?>">
-                              <button type="submit" class="btn btn-sm btn-success"><i class="fa fa-check" aria-hidden="true"></i></button>
-                            </form>
-                          </td>
+                              <td>
+                                <input type="text" class="form-control" name="title" value="<?php echo $todo['message'] ?>">
+                              </td>
+                              <td><?php echo date("F j Y", strtotime($todo['createddate'])) ?></td>
+                              <td>
+                                <input type="date" class="form-control" name="due-date" value="<?php echo date("Y-m-d", strtotime($todo['duedate'])) ?>">
+                              </td>
+                              <td>
+                                  <button type="submit" class="btn btn-sm btn-success"><i class="fa fa-check-circle" aria-hidden="true"></i></button>
+                                </form>
+                                <form style="display:inline" action="." method="POST">
+                                  <button type="submit" class="btn btn-sm btn-danger"><i class="fa fa-ban" aria-hidden="true"></i></button>
+                                </form>
+                              </td>
+                          <?php else: ?>
+                            <td><?php echo $todo['message'] ?></td>
+                            <td><?php echo date("F j Y", strtotime($todo['createddate'])) ?></td>
+                            <td><?php echo date("F j Y", strtotime($todo['duedate'])) ?></td>
+                            <td>
+                              <form style="display:inline" action="." method="POST">
+                                <input type="hidden" name="action" value="delete_todo">
+                                <input type="hidden" name="todo-id" value="<?php echo $todo['id'] ?>">
+                                <button type="submit" class="btn btn-sm btn-danger"><i class="fa fa-trash" aria-hidden="true"></i></button>
+                              </form>
+                              <form style="display:inline" action="." method="POST">
+                                <input type="hidden" name="action" value="set_edit_todo">
+                                <input type="hidden" name="todo-id" value="<?php echo $todo['id'] ?>">
+                                <button type="submit" class="btn btn-sm btn-primary"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></button>
+                              </form>
+                              <form style="display:inline" action="." method="POST">
+                                <input type="hidden" name="action" value="toggle_todo">
+                                <input type="hidden" name="todo-id" value="<?php echo $todo['id'] ?>">
+                                <button type="submit" class="btn btn-sm btn-success"><i class="fa fa-check" aria-hidden="true"></i></button>
+                              </form>
+                            </td>
+                          <?php endif; ?>
                         </tr>
                       <?php endif; ?>
                     <?php endforeach; ?>
                   </tbody>
                 </table>
               </div>
-              <hr>
               <div id="complete-todos">
                 <h3>Completed Todos</h3>
-                <table class="table">
+                <table class="table table-hover">
                   <thead>
-                    <th>Title</th>
+                    <th class="w-50">Title</th>
                     <th>Created on</th>
                     <th>Due date</th>
                     <th>Actions</th>
@@ -71,7 +94,7 @@
                             <form style="display:inline" action="." method="POST">
                               <input type="hidden" name="action" value="toggle_todo">
                               <input type="hidden" name="todo-id" value="<?php echo $todo['id'] ?>">
-                              <button type="submit" class="btn btn-sm btn-success"><i class="fa fa-check" aria-hidden="true"></i></button>
+                              <button type="submit" class="btn btn-sm btn-warning"><i class="fa fa-undo" aria-hidden="true"></i></button>
                             </form>
                           </td>
                         </tr>
@@ -86,8 +109,8 @@
             <form class="form-inline" action="." method="POST">
               <input type="hidden" name="action" value="add_todo">
               <div class="form-group mx-sm-3">
-                <label class="label" for="title">New todo:</label>
-                <div class="input-group-addon">Title</div>
+                <label class="mr-3 font-weight-bold" for="title">New Todo</label>
+                <div class="input-group-addon" size=100>Title</div>
                 <input type="text" class="form-control" id="title" name="title" placeholder="Todo title">
               </div>
               <div class="form-group mx-sm-3">
