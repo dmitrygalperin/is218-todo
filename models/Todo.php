@@ -85,7 +85,7 @@ class Todo {
 
     public static function getTodosByUserId($id) {
         $db = new Database();
-        $query = "SELECT * FROM todos WHERE ownerid = '$id'";
+        $query = "SELECT * FROM todos WHERE ownerid = '$id' ORDER BY duedate";
         $todos = $db->query($query);
         return $todos;
     }

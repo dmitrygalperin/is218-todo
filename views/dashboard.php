@@ -13,7 +13,7 @@
                 <h3>Incomplete Todos</h3>
                 <table class="table table-hover mb-5">
                   <thead>
-                    <th class="w-50">Title</th>
+                    <th class="w-25">Title</th>
                     <th>Created on</th>
                     <th>Due date</th>
                     <th>Actions</th>
@@ -31,7 +31,7 @@
                               </td>
                               <td><?php echo date("F j Y", strtotime($todo['createddate'])) ?></td>
                               <td>
-                                <input type="date" class="form-control" name="due-date" value="<?php echo date("Y-m-d", strtotime($todo['duedate'])) ?>">
+                                <input type="datetime-local" class="form-control" name="due-date" value="<?php echo date("Y-m-d\TH:i", strtotime($todo['duedate'])) ?>">
                               </td>
                               <td>
                                   <button type="submit" class="btn btn-sm btn-success"><i class="fa fa-check-circle" aria-hidden="true"></i></button>
@@ -43,7 +43,7 @@
                           <?php else: ?>
                             <td><?php echo $todo['message'] ?></td>
                             <td><?php echo date("F j Y", strtotime($todo['createddate'])) ?></td>
-                            <td><?php echo date("F j Y", strtotime($todo['duedate'])) ?></td>
+                            <td><?php echo date("m/d/Y g:ia", strtotime($todo['duedate'])) ?></td>
                             <td>
                               <form style="display:inline" action="." method="POST">
                                 <input type="hidden" name="action" value="delete_todo">
@@ -72,7 +72,7 @@
                 <h3>Completed Todos</h3>
                 <table class="table table-hover">
                   <thead>
-                    <th class="w-50">Title</th>
+                    <th class="w-25">Title</th>
                     <th>Created on</th>
                     <th>Due date</th>
                     <th>Actions</th>
@@ -81,22 +81,46 @@
                     <?php foreach($todos as $todo): ?>
                       <?php if($todo['isdone']): ?>
                         <tr>
+                          <?php if((int)$todo['id'] == $edit_id): ?>
+                            <form class="form" action="." method="POST">
+                              <input type="hidden" name="action" value="edit_todo">
+                              <input type="hidden" name="todo-id" value="<?php echo $todo['id'] ?>">
+                              <td>
+                                <input type="text" class="form-control" name="title" value="<?php echo $todo['message'] ?>">
+                              </td>
+                              <td><?php echo date("F j Y", strtotime($todo['createddate'])) ?></td>
+                              <td>
+                                <input type="datetime-local" class="form-control" name="due-date" value="<?php echo date("Y-m-d\TH:i", strtotime($todo['duedate'])) ?>">
+                              </td>
+                              <td>
+                                  <button type="submit" class="btn btn-sm btn-success"><i class="fa fa-check-circle" aria-hidden="true"></i></button>
+                                </form>
+                                <form style="display:inline" action="." method="POST">
+                                  <button type="submit" class="btn btn-sm btn-danger"><i class="fa fa-ban" aria-hidden="true"></i></button>
+                                </form>
+                              </td>
+                          <?php else: ?>
                           <td><?php echo $todo['message'] ?></td>
                           <td><?php echo date("F j Y", strtotime($todo['createddate'])) ?></td>
-                          <td><?php echo date("F j Y", strtotime($todo['duedate'])) ?></td>
+                          <td><?php echo date("m/d/Y g:ia", strtotime($todo['duedate'])) ?></td>
                           <td>
                             <form style="display:inline" action="." method="POST">
                               <input type="hidden" name="action" value="delete_todo">
                               <input type="hidden" name="todo-id" value="<?php echo $todo['id'] ?>">
                               <button type="submit" class="btn btn-sm btn-danger"><i class="fa fa-trash" aria-hidden="true"></i></button>
                             </form>
-                            <a class="btn btn-sm btn-primary" href="#" role="button"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
+                            <form style="display:inline" action="." method="POST">
+                              <input type="hidden" name="action" value="set_edit_todo">
+                              <input type="hidden" name="todo-id" value="<?php echo $todo['id'] ?>">
+                              <button type="submit" class="btn btn-sm btn-primary"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></button>
+                            </form>
                             <form style="display:inline" action="." method="POST">
                               <input type="hidden" name="action" value="toggle_todo">
                               <input type="hidden" name="todo-id" value="<?php echo $todo['id'] ?>">
                               <button type="submit" class="btn btn-sm btn-warning"><i class="fa fa-undo" aria-hidden="true"></i></button>
                             </form>
                           </td>
+                          <?php endif; ?>
                         </tr>
                       <?php endif; ?>
                     <?php endforeach; ?>
@@ -115,7 +139,7 @@
               </div>
               <div class="form-group mx-sm-3">
                 <div class="input-group-addon">Due date</div>
-                <input type="date" class="form-control" id="due-date" name="due-date">
+                <input type="datetime-local" class="form-control" id="due-date" name="due-date">
               </div>
               <button type="submit" class="btn btn-primary">Add Todo</button>
             </form>
