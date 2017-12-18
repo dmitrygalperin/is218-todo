@@ -68,7 +68,14 @@ class User {
 
     public function register() {
         $db = new Database();
-        $query = "INSERT INTO accounts (email, fname, lname, phone, birthday, gender, password) VALUES ('$this->email', '$this->firstName', '$this->lastName', '$this->phone', '$this->birthday', '$this->gender', '$this->password')";
+        $query = "INSERT INTO accounts
+                    (email, fname, lname, phone, birthday, gender, password)
+                    VALUES
+                    ('$this->email', '$this->firstName',
+                    '$this->lastName', '$this->phone',
+                    '$this->birthday', '$this->gender',
+                    '$this->password')";
+
         $db->query($query);
         return  ['success' => true, 'msg', 'You have successfully been registered'];
     }
@@ -110,7 +117,10 @@ class User {
 
     public static function login($email, $password) {
         $db = new Database();
-        $query = "SELECT * FROM accounts WHERE email = '$email' AND password='$password'";
+        $query = "SELECT * FROM accounts
+                    WHERE email = '$email'
+                    AND binary password='$password'";
+                    
         $rows = $db->query($query);
         if(count($rows) > 0) {
             return $rows[0];
